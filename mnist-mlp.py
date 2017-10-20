@@ -30,7 +30,7 @@ def mnist_mlp():
     b_fc3 = bias_variable([10])
     logits = tf.matmul(h_2, W_fc3) + b_fc3
     # loss
-    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(logits, y_)
+    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=y_)
     loss = tf.reduce_mean(cross_entropy)
     # train
     train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
@@ -39,10 +39,10 @@ def mnist_mlp():
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     with tf.Session() as sess:
         sess.run(tf.initialize_all_variables())
-        for step in xrange(100000):
+        for step in range(100000):
             batch = mnist.train.next_batch(50)
             if step % 100 == 0:
-                print accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels})
+                print(accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
             train.run(feed_dict={x: batch[0], y_: batch[1]})
 
 
